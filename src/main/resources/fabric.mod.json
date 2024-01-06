@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "jeje_voicerecognition",
+	"version": "${version}",
+	"name": "jeje_voiceRecognition",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/jeje_voicerecognition/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"mod.jeje.voicerecognition.Jeje_voiceRecognition"
+		],
+		"client": [
+			"mod.jeje.voicerecognition.Jeje_voiceRecognitionClient"
+		]
+	},
+	"mixins": [
+		"jeje_voicerecognition.mixins.json",
+		{
+			"config": "jeje_voicerecognition.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.3",
+		"minecraft": "~1.20.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
