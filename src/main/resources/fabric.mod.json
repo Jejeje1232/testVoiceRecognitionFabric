@@ -18,16 +18,12 @@
 		"main": [
 			"mod.jeje.voicerecognition.Jeje_voiceRecognition"
 		],
-		"client": [
-			"mod.jeje.voicerecognition.Jeje_voiceRecognitionClient"
+		"fabric-datagen": [
+			"mod.jeje.voicerecognition.Jeje_voiceRecognitionDataGenerator"
 		]
 	},
 	"mixins": [
-		"jeje_voicerecognition.mixins.json",
-		{
-			"config": "jeje_voicerecognition.client.mixins.json",
-			"environment": "client"
-		}
+		"jeje_voicerecognition.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.3",
