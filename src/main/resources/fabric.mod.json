@@ -3,20 +3,23 @@
 	"id": "jeje_voicerecognition",
 	"version": "${version}",
 	"name": "jeje_voiceRecognition",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A \"simple\" mod that adds voice recognition to Minecraft, allowing to make events using said recognition.",
 	"authors": [
-		"Me!"
+		"Jejeje1232"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/jeje_voicerecognition/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
 			"mod.jeje.voicerecognition.Jeje_voiceRecognition"
+		],
+		"client": [
+			"mod.jeje.voicerecognition.Jeje_voiceRecognitionClient"
 		],
 		"fabric-datagen": [
 			"mod.jeje.voicerecognition.Jeje_voiceRecognitionDataGenerator"
