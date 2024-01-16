@@ -1,37 +1,83 @@
 package mod.jeje.voicerecognition.voskTest;
 
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.stream.Stream;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.*;
 
+import mod.jeje.voicerecognition.commandHandler;
+import mod.jeje.voicerecognition.networking.PacketHandler;
 import mod.jeje.voicerecognition.wordCounter.WordCounter;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.vosk.LogLevel;
 import org.vosk.Recognizer;
 import org.vosk.LibVosk;
 import org.vosk.Model;
 
+import static mod.jeje.voicerecognition.Jeje_voiceRecognition.MOD_ID;
+
 public class voskTest {
     static CountDownLatch initializationLatch = new CountDownLatch(1);
+    static String modelsStringPath = System.getProperty("user.dir") + "/model/";
+    static Path modelsPath = Path.of(modelsStringPath);
+    //static String modelFolderPath = extractFolder(modelPathJar, "voskModel");
+
+    static String modelRealPath;
+
     WordCounter wordCounter = new WordCounter();
     public static void test() throws IOException, UnsupportedAudioFileException {
+
+        //START TEST
+        if (Files.isDirectory(modelsPath)) {
+            try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(modelsPath)) {
+                // Iterate through the contents of the folder
+                for (Path path : directoryStream) {
+                    // Check if the item is a subfolder
+                    if (Files.isDirectory(path)) {
+                        modelRealPath =  modelsStringPath + path.getFileName();
+                        // Assuming you want only one subfolder, you can break after finding the first one
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No folder found.");
+        }
+
+
+
+        // END TEST
+
         try {
-            LibVosk.setLogLevel(LogLevel.DEBUG);
+            //LibVosk.setLogLevel(LogLevel.DEBUG);
 
             // Load the Vosk model
-            try (Model model = new Model("E:\\VSCode\\Projectos\\git\\testVoiceRecognitionFabric\\src\\main\\java\\mod\\jeje\\voicerecognition\\voskTest\\model\\vosk-model-small-es-0.42")) {
+            try (Model model = new Model(modelRealPath)) {
 
                 // Create an ExecutorService with a single thread
                 ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -81,6 +127,8 @@ public class voskTest {
             initializationLatch.countDown();
 
             //a little test here;
+            String[] bannedWords = {"banana"};
+            List<String> bannedWordsList = Arrays.asList(bannedWords);
             while (true) {
                 bytesRead = line.read(buffer, 0, bufferSize);
 
@@ -92,23 +140,13 @@ public class voskTest {
                         System.out.println("----------------");
 
                         //TEMP
-                        String[] wordArray = getWord(jsonResult).split(" ");
-                        String[] bannedWords = {"banana"};
-                        for (String word : wordArray) {
-                            if (word != "") {
-                            for (String banned : bannedWords) {
-                                System.out.println("{\"" + word + "\"} : {\"" + banned + "\"}");
-                                if (Objects.equals(word, banned)) {
-                                    System.out.println("IT WORKED?");
+                        //String[] wordArray = getWord(jsonResult).split(" ");
+                        String word = getWord(jsonResult);
 
-
-                                    // ACA TENGO QUE CONTINUAR
-
-
-
-                                    }
-                                }
-                            } else {continue;}
+                        if (word != "" && bannedWordsList.stream().anyMatch(word::contains)){
+                            //MinecraftClient.getInstance().player.sendMessage(Text.of("El Sexo:tm:"));
+                            //commandHandler.executeCommand("execute as @a run tp ~ ~10 ~");
+                            ClientPlayNetworking.send(PacketHandler.EVENT_ID, PacketByteBufs.create());
                         }
                     }
                 }
@@ -128,4 +166,18 @@ public class voskTest {
 
         return (TargetDataLine) AudioSystem.getLine(info);
     }
+
+    private static void testResourceFile(String resourcePath) {
+        // Use the class loader to get the URL of the resource
+        URL resourceUrl = voskTest.class.getClassLoader().getResource(resourcePath);
+
+        // Check if the resource URL is not null and the file exists
+        if (resourceUrl != null) {
+            System.out.println("Resource file found for path: " + resourcePath);
+            System.out.println("File URL: " + resourceUrl.getFile());
+        } else {
+            System.out.println("Resource file not found for path: " + resourcePath);
+        }
+    }
+
 }

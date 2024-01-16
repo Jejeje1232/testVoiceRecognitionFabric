@@ -1,5 +1,6 @@
 package mod.jeje.voicerecognition;
 
+import mod.jeje.voicerecognition.networking.PacketHandler;
 import mod.jeje.voicerecognition.voskTest.voskTest;
 import net.fabricmc.api.ClientModInitializer;
 
@@ -15,6 +16,8 @@ public class Jeje_voiceRecognitionClient implements ClientModInitializer{
         } catch (IOException | UnsupportedAudioFileException e) {
             throw new RuntimeException(e);
         }
+
+        PacketHandler.registerS2CPackets();
 
     }
 }

@@ -1,7 +1,9 @@
 package mod.jeje.voicerecognition;
 
+import mod.jeje.voicerecognition.networking.PacketHandler;
 import mod.jeje.voicerecognition.voskTest.voskTest;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import net.minecraft.server.MinecraftServer;
@@ -31,6 +33,8 @@ public class Jeje_voiceRecognition implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Hello Fabric world!");
+		ServerLifecycleEvents.SERVER_STARTED.register(commandHandler::onServerStart);
+		PacketHandler.registerC2SPackets();
 
     }
 }
