@@ -9,6 +9,11 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
 import static net.minecraft.entity.SpawnReason.TRIGGERED;
 
 // This is a C2S package:
@@ -36,6 +41,9 @@ public class jejeEvents {
 
     public static void TPEvent(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
         //TP the player a random number of blocks in a random direction.
+        List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
+        List<ServerPlayerEntity> playersShift = new ArrayList<ServerPlayerEntity>(players);
+        Collections.rotate(playersShift, 1);
     }
 
     public static void Erase(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
@@ -64,6 +72,19 @@ public class jejeEvents {
 
     public static void Skibiddi(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
         //I forgor.
+    }
+
+    public static void TPTEST(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+
+        ServerWorld world = player.getServerWorld();
+        System.out.println("Server tickrate: " + player.getServerWorld().getTickManager().getTickRate());
+        world.getTickManager().setTickRate(200);
+        System.out.println("Server modified tickrate: " + player.getServerWorld().getTickManager().getTickRate());
+        jejeEventsCallbacksHandler.jejeSchedule(5,"TPTEST", jejeEventsCallbacks::TPTEST_Reset,server, player, handler, buf, sender);
+
+
+
+
     }
 
 }

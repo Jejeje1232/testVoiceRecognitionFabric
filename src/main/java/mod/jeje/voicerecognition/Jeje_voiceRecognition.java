@@ -1,19 +1,14 @@
 package mod.jeje.voicerecognition;
 
+import mod.jeje.voicerecognition.events.jejeEventsCallbacksHandler;
 import mod.jeje.voicerecognition.networking.PacketHandler;
-import mod.jeje.voicerecognition.voskTest.voskTest;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.IOException;
 
 public class Jeje_voiceRecognition implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -32,8 +27,16 @@ public class Jeje_voiceRecognition implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		LOGGER.info("Hello Fabric world!");
+		//LOGGER.info("Hello Fabric world!");
+
+		//Initializes the command manager, in case the mod needs it.
 		ServerLifecycleEvents.SERVER_STARTED.register(commandHandler::onServerStart);
+		//--------
+		//Some events
+		ServerTickEvents.END_SERVER_TICK.register(jejeEventsCallbacksHandler::counterSteps);
+		ServerTickEvents.END_SERVER_TICK.register(jejeEventsCallbacksHandler::checkSteps);
+		//--------
+
 		PacketHandler.registerC2SPackets();
 
     }

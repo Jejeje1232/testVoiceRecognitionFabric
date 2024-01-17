@@ -3,41 +3,25 @@ package mod.jeje.voicerecognition.voskTest;
 
 import java.io.*;
 
-import java.net.URI;
 import java.net.URL;
 import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.stream.Stream;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.*;
 
-import mod.jeje.voicerecognition.commandHandler;
 import mod.jeje.voicerecognition.networking.PacketHandler;
 import mod.jeje.voicerecognition.wordCounter.WordCounter;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import org.vosk.LogLevel;
 import org.vosk.Recognizer;
-import org.vosk.LibVosk;
 import org.vosk.Model;
-
-import static mod.jeje.voicerecognition.Jeje_voiceRecognition.MOD_ID;
 
 public class voskTest {
     static CountDownLatch initializationLatch = new CountDownLatch(1);
@@ -147,6 +131,7 @@ public class voskTest {
                             //MinecraftClient.getInstance().player.sendMessage(Text.of("El Sexo:tm:"));
                             //commandHandler.executeCommand("execute as @a run tp ~ ~10 ~");
                             ClientPlayNetworking.send(PacketHandler.EVENT_ID, PacketByteBufs.create());
+
                         }
                     }
                 }

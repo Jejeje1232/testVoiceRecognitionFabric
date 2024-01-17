@@ -11,7 +11,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class C2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
 
-        jejeEvents.Creepers(server, player, handler, buf, responseSender);
+        jejeEvents.TPTEST(server, player, handler, buf, responseSender);
 
     }
 }
