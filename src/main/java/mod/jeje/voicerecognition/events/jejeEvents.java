@@ -8,6 +8,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,11 +77,12 @@ public class jejeEvents {
 
     public static void TPTEST(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
 
-        ServerWorld world = player.getServerWorld();
-        System.out.println("Server tickrate: " + player.getServerWorld().getTickManager().getTickRate());
-        world.getTickManager().setTickRate(200);
-        System.out.println("Server modified tickrate: " + player.getServerWorld().getTickManager().getTickRate());
-        jejeEventsCallbacksHandler.jejeSchedule(5,"TPTEST", jejeEventsCallbacks::TPTEST_Reset,server, player, handler, buf, sender);
+//        ServerWorld world = server.getWorld(ServerWorld.OVERWORLD);
+//        System.out.println("Server tickrate: " + world.getTickManager().getTickRate());
+//        world.getTickManager().setTickRate(200);
+//        System.out.println("Server modified tickrate: " + world.getTickManager().getTickRate());
+//        jejeEventsCallbacksHandler.jejeSchedule(5,"TPTEST", jejeEventsCallbacks::TPTEST_Reset,server);
+        player.teleport(player.getX(), player.getY() + 10, player.getZ());
 
 
 

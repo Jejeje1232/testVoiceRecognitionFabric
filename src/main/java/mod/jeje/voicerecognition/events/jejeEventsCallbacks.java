@@ -8,12 +8,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 
 public class jejeEventsCallbacks {
-    public static void TPTEST_Reset(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+    public static void TPTEST_Reset(MinecraftServer server){
 
-        ServerWorld world = player.getServerWorld();
-        System.out.println("Server tickrate: " + player.getServerWorld().getTickManager().getTickRate());
+        ServerWorld world = server.getWorld(ServerWorld.OVERWORLD);
+        System.out.println("Server tickrate: " + world.getTickManager().getTickRate());
         world.getTickManager().setTickRate(20);
-        System.out.println("Server modified tickrate: " + player.getServerWorld().getTickManager().getTickRate());
+        System.out.println("Server modified tickrate: " + world.getTickManager().getTickRate());
 
     }
 }

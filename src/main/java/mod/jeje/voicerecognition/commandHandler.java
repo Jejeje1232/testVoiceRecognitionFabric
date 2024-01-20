@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 
 public class commandHandler{
 
-    static ServerCommandSource commandSource;
+    public static ServerCommandSource commandSource;
 
     public static void onServerStart(MinecraftServer server){
         commandSource = server.getCommandSource();

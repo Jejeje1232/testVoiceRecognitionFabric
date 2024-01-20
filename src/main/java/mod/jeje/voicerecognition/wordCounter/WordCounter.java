@@ -14,6 +14,13 @@ public class WordCounter {
         wordOccurrences.put(word, wordOccurrences.getOrDefault(word, 0) + 1);
     }
 
+    public void removeWord(String word) {
+        // Remove the given word from the map
+        if (wordOccurrences.containsKey(word)) {
+            wordOccurrences.remove(word);
+        }
+    }
+
     public int getOccurrences(String word) {
         return wordOccurrences.getOrDefault(word, 0);
     }
@@ -27,7 +34,6 @@ public class WordCounter {
         // Sort entries by value (occurrences) in descending order
         List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(wordOccurrences.entrySet());
         sortedEntries.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
-
         // Get the first n entries
         return sortedEntries.subList(0, Math.min(n, sortedEntries.size()));
     }

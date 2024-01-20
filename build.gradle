@@ -40,6 +40,11 @@ dependencies {
 	//Vosk (Third Party)
 	implementation group: 'net.java.dev.jna', name: 'jna', version: '5.7.0'
 	implementation group: 'com.alphacephei', name: 'vosk', version: '0.3.45'
+	include group: 'net.java.dev.jna', name: 'jna', version: '5.7.0'
+	include group: 'com.alphacephei', name: 'vosk', version: '0.3.45'
+
+	//TTS (Third Party)
+	//implementation 'org.mbte:FreeTTS:1.2.2'
 }
 
 processResources {

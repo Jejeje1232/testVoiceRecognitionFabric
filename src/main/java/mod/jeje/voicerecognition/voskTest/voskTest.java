@@ -5,6 +5,7 @@ import java.io.*;
 
 import java.net.URL;
 import java.nio.file.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -16,10 +17,15 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.*;
 
+import mod.jeje.voicerecognition.Jeje_voiceRecognition;
+import mod.jeje.voicerecognition.commandHandler;
 import mod.jeje.voicerecognition.networking.PacketHandler;
+import mod.jeje.voicerecognition.setup.setupActions;
 import mod.jeje.voicerecognition.wordCounter.WordCounter;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import org.vosk.Recognizer;
 import org.vosk.Model;
 
@@ -30,6 +36,8 @@ public class voskTest {
     //static String modelFolderPath = extractFolder(modelPathJar, "voskModel");
 
     static String modelRealPath;
+
+    public static List<String> bannedWords = new ArrayList<>();
 
     WordCounter wordCounter = new WordCounter();
     public static void test() throws IOException, UnsupportedAudioFileException {
@@ -76,7 +84,9 @@ public class voskTest {
                 initializationLatch.await();
                 long endTime = System.currentTimeMillis();
                 long initTime = endTime - startTime;
-                System.out.println("Jeje_LOG: Initialization of voiceRecognition took:" + initTime + "ms");
+                //System.out.println("Jeje_LOG: Initialization of voiceRecognition took:" + initTime + "ms");
+                Jeje_voiceRecognition.LOGGER.info("Jeje_LOG: Initialization of voiceRecognition took:" + initTime + "ms");
+
 
                 // Shut down the ExecutorService
                 //executorService.shutdown();
@@ -111,8 +121,6 @@ public class voskTest {
             initializationLatch.countDown();
 
             //a little test here;
-            String[] bannedWords = {"banana"};
-            List<String> bannedWordsList = Arrays.asList(bannedWords);
             while (true) {
                 bytesRead = line.read(buffer, 0, bufferSize);
 
@@ -120,6 +128,9 @@ public class voskTest {
                     if (recognizer.acceptWaveForm(buffer, bytesRead)) {
                         String jsonResult = recognizer.getResult();
 //                        System.out.println(jsonResult);
+
+
+
                         System.out.println(getWord(jsonResult));
                         System.out.println("----------------");
 
@@ -127,12 +138,20 @@ public class voskTest {
                         //String[] wordArray = getWord(jsonResult).split(" ");
                         String word = getWord(jsonResult);
 
-                        if (word != "" && bannedWordsList.stream().anyMatch(word::contains)){
-                            //MinecraftClient.getInstance().player.sendMessage(Text.of("El Sexo:tm:"));
-                            //commandHandler.executeCommand("execute as @a run tp ~ ~10 ~");
-                            ClientPlayNetworking.send(PacketHandler.EVENT_ID, PacketByteBufs.create());
-
+                        if (!word.isEmpty() && ClientPlayNetworking.canSend(PacketHandler.SEND_STRINGS_ID)){
+                            PacketByteBuf stringToSend = PacketByteBufs.create();
+                            stringToSend.writeString(word);
+                            ClientPlayNetworking.send(PacketHandler.SEND_STRINGS_ID, stringToSend);
                         }
+
+
+//                        if (word != "" && bannedWords.stream().anyMatch(word::contains)){
+//                            //MinecraftClient.getInstance().player.sendMessage(Text.of("El Sexo:tm:"));
+//                            //commandHandler.executeCommand("execute as @a run tp ~ ~10 ~");
+//                            //ClientPlayNetworking.send(PacketHandler.EVENT_ID, PacketByteBufs.create());
+//
+//
+//                        }
                     }
                 }
             }
