@@ -18,14 +18,14 @@ public class stringProcessing {
             // Artículos
             "el", "la", "los", "las", "un", "una", "unos", "unas",
             // Pronombres
-            "yo", "tÃº", "Ã©l", "ella", "nosotros", "vosotros", "ellos", "ellas",
-            "me", "te", "se", "nos", "os", "los", "las", "mÃ\u00AD", "ti", "consigo", "conmigo", "contigo", "le",
+            "yo", "túº", "él", "ella", "nosotros", "vosotros", "ellos", "ellas",
+            "me", "te", "se", "nos", "os", "los", "las", "mí", "ti", "consigo", "conmigo", "contigo", "le",
             // Preposiciones
             "a", "de", "en", "con", "por", "para", "sin", "sobre", "entre", "hacia",
             // Conjunciones
             "y", "o", "pero", "aunque", "si", "porque", "cuando", "mientras", "como", "sino",
-            // Palabras imprescindibles (limitadas a 2, no sé si agregar más)
-            "sÃ\u00AD", "no"
+            // Palabras imprescindibles (limitadas a 3, no sé si agregar más)
+            "sí", "no", "es"
     };
     static List<String> omittedWords = new ArrayList<>(List.of(wordsToOmit));
 

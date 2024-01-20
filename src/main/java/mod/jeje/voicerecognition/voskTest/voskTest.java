@@ -4,6 +4,7 @@ package mod.jeje.voicerecognition.voskTest;
 import java.io.*;
 
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +18,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.*;
 
+import com.ibm.icu.text.CharsetDetector;
+import com.ibm.icu.text.CharsetMatch;
 import mod.jeje.voicerecognition.Jeje_voiceRecognition;
 import mod.jeje.voicerecognition.commandHandler;
 import mod.jeje.voicerecognition.networking.PacketHandler;
@@ -99,7 +102,12 @@ public class voskTest {
 
     private static String getWord(String jsonText){
         if (jsonText.length() > 20) {
-            return jsonText.substring(14, jsonText.length() - 3);
+            //TEST
+            CharsetDetector detector = new CharsetDetector();
+
+            //String theString = new String(jsonText.substring(14, jsonText.length() - 3).getBytes(), java.nio.charset.StandardCharsets.ISO_8859_1);
+            byte[] theStringByte = jsonText.substring(14, jsonText.length() - 3).getBytes(StandardCharsets.ISO_8859_1);
+            return new String(theStringByte, StandardCharsets.UTF_8);
         } else {
             return "";
         }
