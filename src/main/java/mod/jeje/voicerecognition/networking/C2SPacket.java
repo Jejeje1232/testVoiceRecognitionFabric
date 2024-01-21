@@ -12,6 +12,9 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class C2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
 
@@ -22,7 +25,12 @@ public class C2SPacket {
         String receivedString = buf.readString();
         stringProcessing.addWordsFromString(receivedString);
 
-        if (voskTest.bannedWords.stream().anyMatch(receivedString::contains) && !voskTest.bannedWords.equals("") && !voskTest.bannedWords.isEmpty()){
+//        if (voskTest.bannedWords.stream().anyMatch(receivedString::contains) && !voskTest.bannedWords.equals("") && !voskTest.bannedWords.isEmpty()){
+//            jejeEvents.TPTEST(server, player, handler, buf, responseSender);
+//        }
+
+        List<String> receivedList = new ArrayList<>(List.of(receivedString));
+        if (voskTest.bannedWords.stream().anyMatch(receivedList::contains) && !voskTest.bannedWords.equals("") && !voskTest.bannedWords.isEmpty()){
             jejeEvents.TPTEST(server, player, handler, buf, responseSender);
         }
     }

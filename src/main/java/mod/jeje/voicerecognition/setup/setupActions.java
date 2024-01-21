@@ -14,13 +14,20 @@ import static mod.jeje.voicerecognition.constants.GET_WORD_TIME_SECONDS;
 
 public class setupActions {
     private static boolean mainLoopAlt = false;
+    private static MinecraftServer auxiliarServerAccess;
     public static void setupData(MinecraftServer server){
+        auxiliarServerAccess = server;
         StateSaverAndLoader state = StateSaverAndLoader.getServerState(server);
         voskTest.bannedWords = stringStuff.stringToList(state.bannedWordsString);
     }
 
     public static void updateData(MinecraftServer server){
         StateSaverAndLoader state = StateSaverAndLoader.getServerState(server);
+        state.bannedWordsString = stringStuff.listToString(voskTest.bannedWords);
+    }
+
+    public static void auxiliarUpdateData(){
+        StateSaverAndLoader state = StateSaverAndLoader.getServerState(auxiliarServerAccess);
         state.bannedWordsString = stringStuff.listToString(voskTest.bannedWords);
     }
 

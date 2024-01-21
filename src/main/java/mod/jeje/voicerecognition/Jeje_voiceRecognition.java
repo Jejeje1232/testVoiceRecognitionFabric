@@ -1,5 +1,7 @@
 package mod.jeje.voicerecognition;
 
+import mod.jeje.voicerecognition.commands.CommandRegistries;
+import mod.jeje.voicerecognition.commands.clearBannedWords;
 import mod.jeje.voicerecognition.events.jejeEventsCallbacksHandler;
 import mod.jeje.voicerecognition.networking.PacketHandler;
 import mod.jeje.voicerecognition.setup.setupActions;
@@ -53,7 +55,8 @@ public class Jeje_voiceRecognition implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STOPPING.register(jejeEventsCallbacksHandler::forceTriggerAll);
 		ServerLifecycleEvents.SERVER_STOPPING.register(jejeEventsCallbacksHandler::toTest);
 
+		//Registries.
 		PacketHandler.registerC2SPackets();
-
+		CommandRegistries.registerCommands();
     }
 }

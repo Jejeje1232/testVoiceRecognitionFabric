@@ -24,7 +24,8 @@ public class keybindHandler {
             //MinecraftClient.getInstance().player.sendMessage(Text.of("The keybind works, at least."));
             if (menuKey.wasPressed()) {
                 if (client.player != null) {
-                    client.setScreen(new screenHandler(new infoScreen()));
+                    screenHandler test = new screenHandler(new infoScreen());
+                    client.setScreen(test);
                 }
             }
 
