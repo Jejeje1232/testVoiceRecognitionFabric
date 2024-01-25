@@ -10,6 +10,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -54,6 +55,9 @@ public class Jeje_voiceRecognition implements ModInitializer {
 		//Remove check list.
 		ServerLifecycleEvents.SERVER_STOPPING.register(jejeEventsCallbacksHandler::forceTriggerAll);
 		ServerLifecycleEvents.SERVER_STOPPING.register(jejeEventsCallbacksHandler::toTest);
+
+		//Sync test.
+		ServerPlayConnectionEvents.JOIN.register(setupActions::setupClientData);
 
 		//Registries.
 		PacketHandler.registerC2SPackets();

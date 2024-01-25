@@ -10,14 +10,13 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 public class jejeEventsCallbacksHandler {
 
-    public interface QuadConsumer<T, U, V, W, M> {
+    public interface PentaConsumer<T, U, V, W, M> {
         void accept(T t, U u, V v, W w, M m);
     }
 
@@ -119,7 +118,7 @@ public class jejeEventsCallbacksHandler {
     }
 
     //This one is for the ones that require the full server info.
-    public static boolean jejeSchedule(float time, String COUNTER_ID, QuadConsumer<MinecraftServer, ServerPlayerEntity, ServerPlayNetworkHandler, PacketByteBuf, PacketSender> callback, MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+    public static boolean jejeSchedule(float time, String COUNTER_ID, PentaConsumer<MinecraftServer, ServerPlayerEntity, ServerPlayNetworkHandler, PacketByteBuf, PacketSender> callback, MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
         //The time is in Seconds.
         if (forceTriggerB){callback.accept(server, player, handler, buf, sender); return true;}
 

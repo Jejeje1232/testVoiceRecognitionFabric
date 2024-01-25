@@ -7,5 +7,8 @@ public class CommandRegistries {
     public static void registerCommands(){
         CommandRegistrationCallback.EVENT.register(clearBannedWords::register);
         CommandRegistrationCallback.EVENT.register(manualBanWord::register);
+        //TEMP
+        CommandRegistrationCallback.EVENT.register(changeColorTest::register);
+        CommandRegistrationCallback.EVENT.register(changeTextTest::register);
     }
 }

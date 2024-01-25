@@ -1,22 +1,28 @@
 package mod.jeje.voicerecognition.networking;
 
-import mod.jeje.voicerecognition.events.jejeEvents;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import mod.jeje.voicerecognition.commandHandler;
 
 import mod.jeje.voicerecognition.utils.stringProcessing;
+import mod.jeje.voicerecognition.utils.stringStuff;
 import mod.jeje.voicerecognition.voskTest.voskTest;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.client.MinecraftClient;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static mod.jeje.voicerecognition.networking.PacketHandler.DISP_DET_WORDS;
 
 public class C2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
+
 
         //jejeEvents.TPTEST(server, player, handler, buf, responseSender);
 
@@ -29,9 +35,32 @@ public class C2SPacket {
 //            jejeEvents.TPTEST(server, player, handler, buf, responseSender);
 //        }
 
-        List<String> receivedList = new ArrayList<>(List.of(receivedString));
-        if (voskTest.bannedWords.stream().anyMatch(receivedList::contains) && !voskTest.bannedWords.equals("") && !voskTest.bannedWords.isEmpty()){
-            jejeEvents.TPTEST(server, player, handler, buf, responseSender);
+        List<String> receivedList = new ArrayList<String>(stringStuff.stringToList(receivedString));
+//        if (voskTest.bannedWords.stream().anyMatch(receivedList::contains) && !voskTest.bannedWords.equals("") && !voskTest.bannedWords.isEmpty()){
+//            jejeEvents.TPTEST(server, player, handler, buf, responseSender);
+//        }
+
+        List<String> matchingWords = new ArrayList<String>(receivedList);
+        matchingWords.retainAll(voskTest.bannedWords);
+
+//        List<String> matchingWords = new ArrayList<>();
+//
+//        for (String word : voskTest.bannedWords) {
+//            if (receivedList.contains(word)) {
+//                matchingWords.add(word);
+//            }
+//        }
+
+        System.out.println(receivedList);
+
+        if (!matchingWords.isEmpty() && !voskTest.bannedWords.isEmpty() && player != null) {
+            //jejeEvents.TPTEST(server, player, handler, buf, responseSender);
+
+            String listAsStringToSend = stringStuff.listToString(matchingWords);
+            PacketByteBuf dataToDisplay = PacketByteBufs.create();
+            dataToDisplay.writeString(listAsStringToSend);
+            ServerPlayNetworking.send(player, DISP_DET_WORDS, dataToDisplay);
         }
+
     }
 }

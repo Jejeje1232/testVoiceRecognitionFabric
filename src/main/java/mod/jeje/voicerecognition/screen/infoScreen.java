@@ -4,6 +4,7 @@ import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import io.github.cottonmc.cotton.gui.widget.icon.ItemIcon;
+import mod.jeje.voicerecognition.keybinds.keybindHandler;
 import mod.jeje.voicerecognition.voskTest.voskTest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -11,6 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import static mod.jeje.voicerecognition.Jeje_voiceRecognition.MOD_ID;
+import static mod.jeje.voicerecognition.Jeje_voiceRecognitionClient.clientBannedList;
 import static net.minecraft.util.math.MathHelper.ceil;
 
 public class infoScreen extends LightweightGuiDescription {
@@ -35,7 +37,8 @@ public class infoScreen extends LightweightGuiDescription {
         root.add(label, 0, 1, 2, 1);
 
         //The actual Banned Words text.
-        String theString = voskTest.bannedWords.toString();
+        //String theString = voskTest.bannedWords.toString();
+        String theString = clientBannedList.toString();
         String trimmedString = theString.substring(1, theString.length()-1);
         WText textWidget = new WText(Text.of(trimmedString));
         //root.add(new WText(Text.of(trimmedString)), 0, 2, 20, 10);
