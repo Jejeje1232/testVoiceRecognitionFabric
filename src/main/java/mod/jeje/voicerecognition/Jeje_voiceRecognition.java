@@ -3,6 +3,7 @@ package mod.jeje.voicerecognition;
 import mod.jeje.voicerecognition.commands.CommandRegistries;
 import mod.jeje.voicerecognition.commands.clearBannedWords;
 import mod.jeje.voicerecognition.events.jejeEventsCallbacksHandler;
+import mod.jeje.voicerecognition.events.someRegisters;
 import mod.jeje.voicerecognition.networking.PacketHandler;
 import mod.jeje.voicerecognition.setup.setupActions;
 import mod.jeje.voicerecognition.utils.stringProcessing;
@@ -49,7 +50,9 @@ public class Jeje_voiceRecognition implements ModInitializer {
 		//--------
 		//Some events.
 		ServerTickEvents.END_SERVER_TICK.register(jejeEventsCallbacksHandler::counterSteps);
-		ServerTickEvents.END_SERVER_TICK.register(jejeEventsCallbacksHandler::checkSteps);
+		ServerTickEvents.END_SERVER_TICK.register(jejeEventsCallbacksHandler::checkFromCopy);
+
+		//ServerTickEvents.END_SERVER_TICK.register(jejeEventsCallbacksHandler::checkSteps);
 		//--------
 
 		//Remove check list.
@@ -62,5 +65,6 @@ public class Jeje_voiceRecognition implements ModInitializer {
 		//Registries.
 		PacketHandler.registerC2SPackets();
 		CommandRegistries.registerCommands();
+		someRegisters.registerEvents();
     }
 }

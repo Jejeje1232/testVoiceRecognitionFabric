@@ -3,6 +3,7 @@ package mod.jeje.voicerecognition.networking;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mod.jeje.voicerecognition.commandHandler;
 
+import mod.jeje.voicerecognition.events.jejeEvents;
 import mod.jeje.voicerecognition.utils.stringProcessing;
 import mod.jeje.voicerecognition.utils.stringStuff;
 import mod.jeje.voicerecognition.voskTest.voskTest;
@@ -24,7 +25,7 @@ public class C2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
 
 
-        //jejeEvents.TPTEST(server, player, handler, buf, responseSender);
+        //jejeEvents.Zombification(server, player, handler, buf, responseSender);
 
     }
     public static void receiveString(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
@@ -60,6 +61,11 @@ public class C2SPacket {
             PacketByteBuf dataToDisplay = PacketByteBufs.create();
             dataToDisplay.writeString(listAsStringToSend);
             ServerPlayNetworking.send(player, DISP_DET_WORDS, dataToDisplay);
+        }
+
+        for (int i = 0; i<matchingWords.size(); i++){
+            //Acá se colocan los eventos a elegir.
+            jejeEvents.TPEvent(server, player, handler, buf, responseSender);
         }
 
     }
