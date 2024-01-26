@@ -2,6 +2,7 @@ package mod.jeje.voicerecognition.setup;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mod.jeje.voicerecognition.commandHandler;
+import mod.jeje.voicerecognition.events.eventTriggerPool;
 import mod.jeje.voicerecognition.events.jejeEventsCallbacks;
 import mod.jeje.voicerecognition.events.jejeEventsCallbacksHandler;
 import mod.jeje.voicerecognition.networking.PacketHandler;
@@ -18,10 +19,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+import static mod.jeje.voicerecognition.constants.EVENT_DIST;
 import static mod.jeje.voicerecognition.constants.GET_WORD_TIME_SECONDS;
 
 public class setupActions {
     private static boolean mainLoopAlt = false;
+    private static boolean eventLoopAlt = false;
     public static MinecraftServer auxiliarServerAccess;
 
     public static void setupData(MinecraftServer server){
@@ -64,19 +67,35 @@ public class setupActions {
     }
 
     public static void setupMainBanLoop(MinecraftServer server){
-        System.out.println("Se intenta iniciar el main loop");
-        jejeEventsCallbacksHandler.jejeSchedule(GET_WORD_TIME_SECONDS,"SETUP", setupActions::mainLoop, server);
+        //System.out.println("Se intenta iniciar el main loop");
+        jejeEventsCallbacksHandler.jejeSchedule(GET_WORD_TIME_SECONDS,"SETUPMAIN", setupActions::mainLoop, server);
     }
 
-    public static void mainLoop(MinecraftServer server){
+    public static void setupEventLoop(MinecraftServer server){
+        jejeEventsCallbacksHandler.jejeSchedule(EVENT_DIST,"SETUPEVENT", setupActions::eventLoop);
+    }
+
+    private static void eventLoop(){
+
+        eventTriggerPool.runNext();
+
+        eventLoopAlt = !eventLoopAlt;
+        String THIS_ID = eventLoopAlt ? "EVENTLOOP_1" : "EVENTLOOP_2";
+
+        if (jejeEventsCallbacksHandler.forceTriggerB){return;}
+        jejeEventsCallbacksHandler.jejeSchedule(EVENT_DIST,THIS_ID, setupActions::eventLoop);
+    }
+
+    private static void mainLoop(MinecraftServer server){
         stringProcessing.banRandomWord();
         updateData(server);
 
         //TEST
-        StateSaverAndLoader state = StateSaverAndLoader.getServerState(server);
-        System.out.println("PALABRAS BANEADAS: " + state.bannedWordsString);
+        //StateSaverAndLoader state = StateSaverAndLoader.getServerState(server);
+        //System.out.println("PALABRAS BANEADAS: " + state.bannedWordsString);
         //System.out.println("Funciona esta cosa?");
         //END TEST
+
         mainLoopAlt = !mainLoopAlt;
         String THIS_ID = mainLoopAlt ? "MAINLOOP_1" : "MAINLOOP_2";
 

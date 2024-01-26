@@ -4,6 +4,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mod.jeje.voicerecognition.commandHandler;
 
 import mod.jeje.voicerecognition.events.jejeEvents;
+import mod.jeje.voicerecognition.utils.someHelpers;
 import mod.jeje.voicerecognition.utils.stringProcessing;
 import mod.jeje.voicerecognition.utils.stringStuff;
 import mod.jeje.voicerecognition.voskTest.voskTest;
@@ -15,11 +16,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static mod.jeje.voicerecognition.networking.PacketHandler.DISP_DET_WORDS;
+import static mod.jeje.voicerecognition.utils.someHelpers.random;
 
 public class C2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
@@ -52,10 +55,9 @@ public class C2SPacket {
 //            }
 //        }
 
-        System.out.println(receivedList);
+        //System.out.println(receivedList);
 
         if (!matchingWords.isEmpty() && !voskTest.bannedWords.isEmpty() && player != null) {
-            //jejeEvents.TPTEST(server, player, handler, buf, responseSender);
 
             String listAsStringToSend = stringStuff.listToString(matchingWords);
             PacketByteBuf dataToDisplay = PacketByteBufs.create();
@@ -65,7 +67,10 @@ public class C2SPacket {
 
         for (int i = 0; i<matchingWords.size(); i++){
             //Acá se colocan los eventos a elegir.
-            jejeEvents.TPEvent(server, player, handler, buf, responseSender);
+            assert player != null;
+            try{
+            someHelpers.executeRandomMethod(random, server, player, handler, buf, responseSender);
+            } catch (InvocationTargetException | IllegalAccessException ignore) {}
         }
 
     }

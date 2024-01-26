@@ -13,9 +13,9 @@ public class jejeEventsCallbacks {
 
         ServerWorld world = server.getWorld(ServerWorld.OVERWORLD);
         assert world != null;
-        System.out.println("Server tickrate: " + world.getTickManager().getTickRate());
+        //System.out.println("Server tickrate: " + world.getTickManager().getTickRate());
         world.getTickManager().setTickRate(20);
-        System.out.println("Server modified tickrate: " + world.getTickManager().getTickRate());
+        //System.out.println("Server modified tickrate: " + world.getTickManager().getTickRate());
 
     }
 

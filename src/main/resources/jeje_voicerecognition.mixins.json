@@ -3,7 +3,9 @@
 	"package": "mod.jeje.voicerecognition.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"ExampleMixin"
+		"ExampleMixin",
+		"FoodEffectsMixin",
+		"PlayerDeadMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

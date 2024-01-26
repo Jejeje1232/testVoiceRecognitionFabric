@@ -108,10 +108,10 @@ public class jejeEventsCallbacksHandler {
             }
         } else {
             counters.put(COUNTER_ID, 0f);
-            System.out.println("Counter SET:" + COUNTER_ID + " " + time);
+            //System.out.println("Counter SET:" + COUNTER_ID + " " + time);
 
             checks.put(COUNTER_ID, () -> jejeSchedule(time, COUNTER_ID, callback));
-            System.out.println("Check SET:" + COUNTER_ID + " " + time);
+            //System.out.println("Check SET:" + COUNTER_ID + " " + time);
             return false;
         }
         return false;
@@ -130,10 +130,10 @@ public class jejeEventsCallbacksHandler {
             }
         } else {
             counters.put(COUNTER_ID, 0f);
-            System.out.println("Counter SET:" + COUNTER_ID + " " + time);
+            //System.out.println("Counter SET:" + COUNTER_ID + " " + time);
 
             checks.put(COUNTER_ID, () -> jejeSchedule(time, COUNTER_ID, callback, server, player, handler, buf, sender));
-            System.out.println("Check SET:" + COUNTER_ID + " " + time);
+            //System.out.println("Check SET:" + COUNTER_ID + " " + time);
             return false;
         }
         return false;
@@ -153,10 +153,10 @@ public class jejeEventsCallbacksHandler {
         } else {
 
             counters.put(COUNTER_ID, 0f);
-            System.out.println("Counter SET:" + COUNTER_ID + " " + time);
+            //System.out.println("Counter SET:" + COUNTER_ID + " " + time);
 
             checks.put(COUNTER_ID, () -> jejeSchedule(time, COUNTER_ID, callback, server));
-            System.out.println("Check SET:" + COUNTER_ID + " " + time);
+            //System.out.println("Check SET:" + COUNTER_ID + " " + time);
             return false;
         }
         //TEST

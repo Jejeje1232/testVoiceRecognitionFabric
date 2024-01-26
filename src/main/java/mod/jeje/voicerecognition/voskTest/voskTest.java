@@ -139,8 +139,8 @@ public class voskTest {
 
 
 
-                        System.out.println(getWord(jsonResult));
-                        System.out.println("----------------");
+                        //System.out.println(getWord(jsonResult));
+                        //System.out.println("----------------");
 
                         //TEMP
                         //String[] wordArray = getWord(jsonResult).split(" ");

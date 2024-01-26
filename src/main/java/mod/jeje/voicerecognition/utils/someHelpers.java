@@ -1,17 +1,18 @@
 package mod.jeje.voicerecognition.utils;
 
 import mod.jeje.voicerecognition.custom.JejeDamageSource;
+import mod.jeje.voicerecognition.events.eventTriggerPool;
+import mod.jeje.voicerecognition.events.jejeEvents;
 import mod.jeje.voicerecognition.flags.jejeFlags;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
@@ -20,17 +21,19 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
-import org.apache.logging.log4j.core.jmx.Server;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
-import java.net.URI;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+import static mod.jeje.voicerecognition.constants.ABS_DEATH;
+
 public class someHelpers {
+    public static Random random = new Random();
     public static void swapPlayerPositions(MinecraftServer server) {
         int playerCount = server.getPlayerManager().getPlayerList().size();
 
@@ -160,5 +163,28 @@ public class someHelpers {
         double e = player.getY() + (double)(random.nextInt(64) - 32);
         double f = player.getZ() + (random.nextDouble() - 0.5) * 64.0;
         return someHelpers.teleportTo(player, d, e, f);
+    }
+
+    public static void executeRandomMethod(Random random, MinecraftServer server, @NotNull ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) throws InvocationTargetException, IllegalAccessException {
+        Method selectedMethod = jejeEvents.methodList[random.nextInt(jejeEvents.methodList.length)];
+        Class<?>[] parameterTypes = {MinecraftServer.class, ServerPlayerEntity.class, ServerPlayNetworkHandler.class, PacketByteBuf.class, PacketSender.class};
+        Object[] parameterValues = new Object[parameterTypes.length];
+
+        parameterValues[0] = server;
+        parameterValues[1] = player;
+        parameterValues[2] = handler;
+        parameterValues[3] = buf;
+        parameterValues[4] = sender;
+
+        eventTriggerPool.add(()-> {
+            try {
+                selectedMethod.invoke(null, parameterValues);
+            } catch (IllegalAccessException | InvocationTargetException ignore) {}
+        }, selectedMethod.getName());
+    }
+
+    public static void killEveryone(MinecraftServer server){
+        if (!ABS_DEATH){return;}
+        server.getPlayerManager().getPlayerList().forEach(ServerPlayerEntity::kill);
     }
 }

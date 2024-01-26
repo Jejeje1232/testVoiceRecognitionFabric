@@ -40,13 +40,15 @@ public class Jeje_voiceRecognition implements ModInitializer {
 
 		//Initializes the command manager, in case the mod needs it.
 		ServerLifecycleEvents.SERVER_STARTED.register(commandHandler::onServerStart);
-		ServerLifecycleEvents.SERVER_STARTED.register(jejeEventsCallbacksHandler::toTest);
+		//ServerLifecycleEvents.SERVER_STARTED.register(jejeEventsCallbacksHandler::toTest);
 		//--------
 		//Setup for the persistent data.
 		ServerLifecycleEvents.SERVER_STARTED.register(setupActions::setupData);
 		//--------
 		//Initializes the main loop for the word ban.
 		ServerLifecycleEvents.SERVER_STARTED.register(setupActions::setupMainBanLoop);
+		//Initialized the event loop, in charge of executing the events after a certain time.
+		ServerLifecycleEvents.SERVER_STARTED.register(setupActions::setupEventLoop);
 		//--------
 		//Some events.
 		ServerTickEvents.END_SERVER_TICK.register(jejeEventsCallbacksHandler::counterSteps);
@@ -57,7 +59,7 @@ public class Jeje_voiceRecognition implements ModInitializer {
 
 		//Remove check list.
 		ServerLifecycleEvents.SERVER_STOPPING.register(jejeEventsCallbacksHandler::forceTriggerAll);
-		ServerLifecycleEvents.SERVER_STOPPING.register(jejeEventsCallbacksHandler::toTest);
+		//ServerLifecycleEvents.SERVER_STOPPING.register(jejeEventsCallbacksHandler::toTest);
 
 		//Sync test.
 		ServerPlayConnectionEvents.JOIN.register(setupActions::setupClientData);

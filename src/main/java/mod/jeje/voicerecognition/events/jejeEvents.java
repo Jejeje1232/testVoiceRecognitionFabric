@@ -21,6 +21,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 import static net.minecraft.entity.SpawnReason.TRIGGERED;
@@ -28,6 +29,8 @@ import static net.minecraft.entity.SpawnReason.TRIGGERED;
 // This is a C2S package:
 public class jejeEvents {
     //private static boolean testEraseLater = false;
+    static Class<?> thisClass = jejeEvents.class;
+    public static Method[] methodList = thisClass.getDeclaredMethods();
     private static Random random = new Random();
 
     public static void Creepers(MinecraftServer server, @NotNull ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
@@ -101,21 +104,21 @@ public class jejeEvents {
 //        //I forgor.
 //    }
 
-    public static void TimeUp(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+    public static void TimeUp(@NotNull MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
         ServerWorld world = server.getWorld(ServerWorld.OVERWORLD);
         assert world != null;
         world.getTickManager().setTickRate(200);
         jejeEventsCallbacksHandler.jejeSchedule(5,"TimeUp", jejeEventsCallbacks::TPTEST_Reset,server);
     }
 
-    public static void TimeDown(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+    public static void TimeDown(@NotNull MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
         ServerWorld world = server.getWorld(ServerWorld.OVERWORLD);
         assert world != null;
         world.getTickManager().setTickRate(5);
         jejeEventsCallbacksHandler.jejeSchedule(5,"TimeDown", jejeEventsCallbacks::TPTEST_Reset,server);
     }
 
-    public static void Invisizombie(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+    public static void Invisizombie(MinecraftServer server, @NotNull ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
         ZombieEntity theZombie = EntityType.ZOMBIE.spawn((ServerWorld) player.getServerWorld(), player.getBlockPos(), TRIGGERED);
         StatusEffectInstance zombieEffect = new StatusEffectInstance(StatusEffects.INVISIBILITY, 10000000, 1);
         assert theZombie != null;
@@ -123,12 +126,21 @@ public class jejeEvents {
     }
 
     public static void HPDOWN(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+        if (player == null){return;}
         EntityAttributeInstance playerHP = player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
         assert playerHP != null;
         double currentHP = playerHP.getValue();
-        playerHP.setBaseValue(currentHP-1);
 
-        if (currentHP >= 0){player.kill();}
+        if (currentHP == 1){player.kill();}
+        playerHP.setBaseValue(currentHP-1);
+    }
+
+    public static void HPUP(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+        if (player == null){return;}
+        EntityAttributeInstance playerHP = player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+        assert playerHP != null;
+        double currentHP = playerHP.getValue();
+        playerHP.setBaseValue(currentHP+1);
     }
 
     public static void Zombification(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){

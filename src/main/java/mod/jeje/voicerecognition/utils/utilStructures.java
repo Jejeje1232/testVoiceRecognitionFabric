@@ -29,7 +29,7 @@ public class utilStructures {
             this.theFunction = function;
         }
 
-        public void test(){System.out.println(this.textList);}
+        //public void test(){System.out.println(this.textList);}
 
         public boolean isEmpty(){return this.textList.isEmpty();}
 
