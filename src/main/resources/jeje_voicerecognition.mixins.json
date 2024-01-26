@@ -5,7 +5,8 @@
 	"mixins": [
 		"ExampleMixin",
 		"FoodEffectsMixin",
-		"PlayerDeadMixin"
+		"PlayerDeadMixin",
+        "PlayerSleepMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

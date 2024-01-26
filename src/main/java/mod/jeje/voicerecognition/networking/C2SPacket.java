@@ -71,6 +71,8 @@ public class C2SPacket {
             try{
             someHelpers.executeRandomMethod(random, server, player, handler, buf, responseSender);
             } catch (InvocationTargetException | IllegalAccessException ignore) {}
+
+            //jejeEvents.WaHoo(server,player,handler,buf,responseSender);
         }
 
     }

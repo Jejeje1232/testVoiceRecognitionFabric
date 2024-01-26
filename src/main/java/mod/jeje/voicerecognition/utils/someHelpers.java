@@ -187,4 +187,8 @@ public class someHelpers {
         if (!ABS_DEATH){return;}
         server.getPlayerManager().getPlayerList().forEach(ServerPlayerEntity::kill);
     }
+
+    public static Vec3d yawToUnitVec3d(float yaw){
+        return new Vec3d(-Math.sin(((Math.PI*yaw)/180)), 0 , Math.cos((Math.PI*yaw)/180));
+    }
 }

@@ -5,6 +5,7 @@ import mod.jeje.voicerecognition.flags.jejeFlags;
 import mod.jeje.voicerecognition.utils.someHelpers;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -18,6 +19,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -151,6 +154,21 @@ public class jejeEvents {
     public static void Enderification(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
         jejeFlags.ENDERIFICATION = true;
         jejeEventsCallbacksHandler.jejeSchedule(600,"EnderificationStop", jejeEventsCallbacks::Enderification_Reset);
+    }
+
+    public static void Sleepyhead(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+        BlockPos pos = player.getBlockPos();
+        player.setPose(EntityPose.SLEEPING);
+        player.setPosition((double)pos.getX() + 0.5, (double)pos.getY() + 0.6875, (double)pos.getZ() + 0.5);
+        player.setSleepingPosition(pos);
+        player.setVelocity(Vec3d.ZERO);
+        player.velocityDirty = true;
+    }
+
+    public static void WaHoo(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+        float playerYaw = player.getHeadYaw();
+        player.addVelocity(someHelpers.yawToUnitVec3d(playerYaw).multiply(1).add(0, 1, 0));
+        player.velocityModified = true;
     }
 
 }
