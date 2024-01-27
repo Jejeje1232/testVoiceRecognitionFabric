@@ -24,9 +24,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
+import static mod.jeje.voicerecognition.utils.someHelpers.random;
 import static net.minecraft.entity.SpawnReason.TRIGGERED;
 
 // This is a C2S package:
@@ -171,4 +173,17 @@ public class jejeEvents {
         player.velocityModified = true;
     }
 
+    public static void DoubleTrouble(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+        //Execute 2 random events instead of 1.
+        //Not really tested yet, but should work.
+        for (int i = 0; i<2; i++){
+            assert player != null;
+            try{
+                someHelpers.executeRandomMethod(random, server, player, handler, buf, sender);
+            } catch (InvocationTargetException | IllegalAccessException ignore) {}}
+    }
+
+    public static void FishBoy(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+        player.getAir();
+    }
 }
