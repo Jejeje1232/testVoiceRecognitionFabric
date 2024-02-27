@@ -9,5 +9,6 @@ public class someRegisters {
 
         ServerTickEvents.END_SERVER_TICK.register(someHelpers::playerZombificationHandler);
         ServerTickEvents.END_SERVER_TICK.register(someHelpers::playerEnderificationHandler);
+        ServerTickEvents.END_SERVER_TICK.register(someHelpers::playerFishBoyHandler);
     }
 }

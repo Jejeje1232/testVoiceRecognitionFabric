@@ -13,6 +13,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.ZombieEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
@@ -21,6 +22,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -78,6 +80,17 @@ public class jejeEvents {
         ItemStack stack = player.getInventory().main.get(random.nextInt(0, player.getInventory().main.size()));
         int slot = player.getInventory().getSlotWithStack(stack);
         player.getInventory().removeStack(slot);
+    }
+
+    public static void Venezuela(MinecraftServer server, @NotNull ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+        //Erases all the food from the player's inventory.
+        PlayerInventory playerInv = player.getInventory();
+        playerInv.main.forEach((itemStack) -> {
+            if (itemStack.isFood()){
+                int slot = playerInv.getSlotWithStack(itemStack);
+                playerInv.removeStack(slot);
+            }
+        });
     }
 
     public static void Drop(MinecraftServer server, @NotNull ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
@@ -159,6 +172,7 @@ public class jejeEvents {
     }
 
     public static void Sleepyhead(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+        jejeFlags.SLEEP_DIRTY_PER_PLAYER.add(player.getUuid());
         BlockPos pos = player.getBlockPos();
         player.setPose(EntityPose.SLEEPING);
         player.setPosition((double)pos.getX() + 0.5, (double)pos.getY() + 0.6875, (double)pos.getZ() + 0.5);
@@ -184,6 +198,21 @@ public class jejeEvents {
     }
 
     public static void FishBoy(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
-        player.getAir();
+        jejeFlags.FISH_BOY = true;
+
+        jejeEventsCallbacksHandler.jejeSchedule(300,"FishBoyStop", jejeEventsCallbacks::FishBoy_Reset);
+    }
+
+    public static void ExplosiveDiarrhea(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender){
+        //Give speed and spawn multiple tnts;
+        StatusEffectInstance playerEffect = new StatusEffectInstance(StatusEffects.SPEED, 30, 1);
+        player.addStatusEffect(playerEffect);
+
+        for (int i = -2; i < 3; i++){
+            for (int k = -2; k < 3; k++){
+                Vec3i toAdd = new Vec3i(i*3, 0, k*3);
+                EntityType.TNT.spawn(player.getServerWorld(), player.getBlockPos().add(toAdd), TRIGGERED);
+            }
+        }
     }
 }

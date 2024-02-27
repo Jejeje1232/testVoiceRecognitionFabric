@@ -1,0 +1,40 @@
+localEvents{
+	Creepers: Spawn a number of creepers behind the player. ++
+	Ghasts: Spawn a number of ghasts near the player. ++
+	Witches: Spawn a number of witches near the player. ++
+	Thunder: self explanatory. ++
+	TNT: self explanatory. ++
+	TP: Tp the player a random number of blocks in a random direction. ++
+	Erase: Erase a random item from the player's inventory. ++
+	Drop: Drop every item from the player's inventory. ++
+	Blindness: Give the player blindness. ++
+	Nausea: self explanatory. ++
+	Fake: Fake a hostile mob sound.
+	Rick? : Rick!
+	Skibidi?: Skibidi!
+	Lag! : Lag... [Maybe]
+	HP DOWN: sadge. [Permanent(-1? -.5?)] ++
+	Game?: Minimize the game.
+	Invisizombie: that. ++
+	Venezuela: Food gone, from inv.
+}
+
+globalEvents{
+	TimeUp: Make the time run faster. ++
+	TimeDown: Make the time run slower. ++
+	Zombification: Sunlight hurts you. ++
+	Enderification: Water hurts you. ++
+	Entangled: Swap two players. ++
+	Blockphobia: Mining a certain block (random) damages you.
+	Yippy!: Make a "Yippy!" sound upon taking damage.
+	ElPepe: Make a mob say "El pepe" when killed.
+}
+
+randomChances{
+	Hush: Make the event silent.
+	Double Trouble: Double event.
+}
+
+maybe {
+	Hacer más grande o más pequeño al jugador. [Si jugamos en la snapshot lo hago]
+}

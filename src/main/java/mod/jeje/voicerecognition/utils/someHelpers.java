@@ -8,6 +8,8 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.tag.FluidTags;
@@ -25,10 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 import static mod.jeje.voicerecognition.constants.ABS_DEATH;
 
@@ -93,6 +92,26 @@ public class someHelpers {
 
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()){
             if (checkEnderificationEnv(player)){player.damage(jejeDamageSource.getWither(), 1f);}
+        }
+    }
+
+    public static boolean checkFishBoyEnv(@NotNull ServerPlayerEntity player){
+        return player.isSubmergedInWater();
+    }
+
+    public static void playerFishBoyHandler(MinecraftServer server){
+        if (!jejeFlags.FISH_BOY){return;}
+
+        StatusEffectInstance inNetherStatus = new StatusEffectInstance(StatusEffects.HUNGER, 100, 1);
+
+        for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()){
+            if (checkFishBoyEnv(player)){
+                if (player.getWorld().getRegistryKey() == World.NETHER){
+                    player.addStatusEffect(inNetherStatus);
+                } else {
+                    player.setAir(player.getAir()>0 ? player.getAir() - 1 : 0);
+                }
+            }
         }
     }
 
@@ -190,5 +209,11 @@ public class someHelpers {
 
     public static Vec3d yawToUnitVec3d(float yaw){
         return new Vec3d(-Math.sin(((Math.PI*yaw)/180)), 0 , Math.cos((Math.PI*yaw)/180));
+    }
+
+    public static void setSleepDirtyFalse(UUID playerUUID){
+        if (jejeFlags.SLEEP_DIRTY_PER_PLAYER.contains(playerUUID)){
+            jejeFlags.SLEEP_DIRTY_PER_PLAYER.removeAll(Collections.singleton(playerUUID));
+        }
     }
 }

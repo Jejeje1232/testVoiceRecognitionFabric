@@ -25,4 +25,5 @@ public class jejeEventsCallbacks {
     public static void Enderification_Reset(){
         jejeFlags.ENDERIFICATION = false;
     }
+    public static void FishBoy_Reset(){jejeFlags.FISH_BOY = false;}
 }

@@ -6,7 +6,9 @@
 		"ExampleMixin",
 		"FoodEffectsMixin",
 		"PlayerDeadMixin",
-        "PlayerSleepMixin"
+        "PlayerSleepMixin",
+		"SleepScreenMixin",
+		"PlayerEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
