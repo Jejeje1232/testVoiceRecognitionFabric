@@ -40,7 +40,7 @@ public class keybindHandler {
                     screenHandler test = new screenHandler(new infoScreen());
                     client.setScreen(test);
                     //TEST
-                    Jeje_voiceRecognitionClient.ttsVoice.speakAsync("Me gustan las bolas");
+                    Jeje_voiceRecognitionClient.ttsVoice.speakAsync("Menú del registro");
                 }
             }
 
