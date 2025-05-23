@@ -68,11 +68,9 @@ public class C2SPacket {
         for (int i = 0; i<matchingWords.size(); i++){
             //Acá se colocan los eventos a elegir.
             assert player != null;
-//            try{
-//            someHelpers.executeRandomMethod(random, server, player, handler, buf, responseSender);
-//            } catch (InvocationTargetException | IllegalAccessException ignore) {}
-
-            jejeEvents.ExplosiveDiarrhea(server,player,handler,buf,responseSender);
+            try{
+            someHelpers.executeRandomMethod(random, server, player, handler, buf, responseSender);
+            } catch (InvocationTargetException | IllegalAccessException ignore) {}
         }
 
     }
